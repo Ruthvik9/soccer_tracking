@@ -16,9 +16,7 @@ All checkpoints are available at https://drive.google.com/drive/folders/1Htbxdq-
 
 ```bash
 git clone https://github.com/Ruthvik9/soccer_tracking.git
-cd clip_reid
 conda env create -f clipreid.yml # For finetuning ClipReID
-cd ../botsort
 conda env create -f track.yml # for tracking inference
 ```
 
