@@ -156,7 +156,7 @@ Given more time and resources, some things that come to mind are: <br />
 i) Investigate better handling of jersey color reliance, which can lead to shortcut learning. <br />
 ii) Develop better motion-based features. <br />
 iii) Integrate the deconfuse track idea to stabilize identity assignment. <br />
-iv) Explore the use of MixSort (by SportsMOT authors) for inference, as it is trained specifically on SportsMOT for tracking. While we take a custom route, MixSort is a strong baseline to benchmark against. <br />
+iv) Explore the use of MixSort (by SportsMOT authors) for inference, as it is trained specifically on SportsMOT for tracking. While I take a custom route, MixSort is a strong baseline to benchmark against. <br />
 v) Combine SportsMOT with SoccerNet dataset to improve domain generalization. <br />
 vi) Integrate auxiliary cues like OCR (jersey numbers) or head/face features, if reliably detected. <br />
 vii) The scope of unique IDs in SportsMOT is not global. Nor is it a dataset that can be used for commercial purposes. So maybe getting some custom data annotated? <br />
