@@ -1,0 +1,22 @@
+DATASETS:
+  NAMES: ('sportsmot_football',)
+  ROOT_DIR: ('datasets/SportsMOT_Football',)
+
+DATALOADER:
+  SAMPLER: 'SportsMOTSampler'
+  NUM_INSTANCE: 4
+  PIDS_PER_BATCH: 16
+
+MODEL:
+  NAME: 'vit_clipreid'
+  SIE_CAMERA: True
+  SIE_COE: 1.0
+  STRIDE_SIZE: [12, 12]
+  PRETRAIN_PATH: '/path/to/msmt17_pretrained.pth'
+
+SOLVER:
+  IMS_PER_BATCH: 64   # 16 PIDs × 4 instances
+  BASE_LR: 3e-4
+  MAX_EPOCHS: 60
+
+OUTPUT_DIR: './output/football_clipreid'
