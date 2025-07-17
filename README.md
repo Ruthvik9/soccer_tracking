@@ -22,9 +22,9 @@ cd ../botsort
 conda env create -f track.yml # for tracking inference
 ```
 
-### Download and Organize SportsMOT Dataset (if you want to fine)
+### Download and Organize SportsMOT Dataset (if you want to finetune)
 
-Ensure the dataset is structured as follows:
+Ensure the dataset is structured as follows (anywhere, we'll later give this path to the ReID style setup code):
 
 ```text
 /path/to/SportsMOT/
@@ -48,9 +48,10 @@ clip_reid/checkpoints/MSMT17_clipreid_ViT-B-16_60.pth
 
 ## Data Preparation
 
-Use the `prepare_sportsmot.py` script from the project root:
+Use the `prepare_sportsmot.py` script from clip_reid:
 
 ```bash
+cd clip_reid
 mkdir -p datasets/SportsMOT_Football
 python prepare_sportsmot.py \
   --mot_root /path/to/SportsMOT \
@@ -67,7 +68,7 @@ The SportsThe log files for this are available in this repo.
 Output structure after running the above code looks like:
 
 ```text
-datasets/SportsMOT_Football/
+datasets/SportsMOT_Football/ # In clip_reid root
   train/0...Ntrain-1/*.jpg
   val/0...Nval-1/*.jpg
   list_train.txt
@@ -81,16 +82,35 @@ datasets/SportsMOT_Football/
 
 ## Match-Aware Sampler
 
-This sampler allows negative sampling within a clip but not across clips of the same match. 
+The Match-Aware Sampler is an extension of the standard “Random Identity Sampler” used in person Re-ID training. Its core functionality is:
+
+i) Batch Construction
+
+Like RandomIdentitySampler, it selects N identities per batch and K examples of each identity, yielding a batch of size N×K.
+
+ii) Match-Aware Constraint (the main part of how it's different from RandomIdentitySampler)
+
+In SportsMOT I noticed that each clip comes from a particular match and for some reason there are multiple clips from the same match in the same split.
+This is fine for tracking but can pose problems in ReID. Because player IDs reset in every clip **even for the same real person**.
+
+Without special handling, the default sampler can sample two crops from different clips of the same match and treat them as a “negative” pair, even though they might show the same player. That injects false negatives into the triplet loss.
+
+The Match-Aware Sampler avoids this by:
+
+Allowing multiple PIDs from the same clip (they truly are different players).
+
+Allowing PIDs from different matches (most probably negatives, can't really avoid this unless we globally reannotate the dataset).
+
+Forbidding PIDs from **different clips of the same match (potential false negatives).
 
 ---
 
 ## Augmentation Pipeline
 
-Replaced the default training transforms in `clipreid/dataset.py` with some extra steps including:
+Added to the default training transforms in `clipreid/dataset.py` some extra steps including:
 
 * Color jittering, gamma adjustment
-* Gaussian blur, normalization
+* Gaussian blur
 
 This enhances model robustness through photometric variations so that the model doesn't overfit to jersey colors etc. (that's the hope atleast :))
 
