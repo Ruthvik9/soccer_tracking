@@ -132,14 +132,14 @@ python infer_botsort.py # Place yolov11 and clip_reid_finetuned checkpoints in b
 ```
 The above code does the following -
 
-i) Loads YOLOv11 detector from models/yolov11_best.pt (the checkpoint you provided) (not the default used by BoTSORT)
-(Note: Like you said, the checkpoint is just a basic one, I see many spurious detections)
-ii) CLIP-ReID encoder from models/clip_reid.pth, wrapped in a small loader (for feature extraction)
-iii) Transforms - Deterministic resize to 256×128 + normalize with your training mean/std (to match the finetuning config when finetuning clipreid)
-iv) All key thresholds (detection conf, IoU gate, appearance gate, new-track conf, buffer length, score fusion) set via a single args = SimpleNamespace(...)
-v) Replaces FastReID in the default BoT-SORT with a custom CLIPInterface that crops each box, runs it through CLIP-ReID, and returns embeddings
-vi) At detection time requests only “player” and “goalkeeper” classes (drops ball, referee which are also classes.)
-vii) Track → tracker.update(detections, frame) applies Kalman+GMC prediction, runs CLIP embeddings for appearance association.
+i) Loads YOLOv11 detector from models/yolov11_best.pt (the checkpoint you provided) (not the default used by BoTSORT)<br />
+(Note: Like you said, the checkpoint is just a basic one, I see many spurious detections)<br />
+ii) CLIP-ReID encoder from models/clip_reid.pth, wrapped in a small loader (for feature extraction)<br />
+iii) Transforms - Deterministic resize to 256×128 + normalize with your training mean/std (to match the finetuning config when finetuning clipreid)<br />
+iv) All key thresholds (detection conf, IoU gate, appearance gate, new-track conf, buffer length, score fusion) set via a single args = SimpleNamespace(...)<br />
+v) Replaces FastReID in the default BoT-SORT with a custom CLIPInterface that crops each box, runs it through CLIP-ReID, and returns embeddings<br />
+vi) At detection time requests only “player” and “goalkeeper” classes (drops ball, referee which are also classes.)<br />
+vii) Track → tracker.update(detections, frame) applies Kalman+GMC prediction, runs CLIP embeddings for appearance association.<br />
 
 ---
 
@@ -151,16 +151,16 @@ vii) Track → tracker.update(detections, frame) applies Kalman+GMC prediction, 
 
 ## Future Work and Potential Enhancements
 
-Given more time and resources, some things that come to mind are:
+Given more time and resources, some things that come to mind are: <br />
 
 i) Investigate better handling of jersey color reliance, which can lead to shortcut learning. <br />
-ii) Develop better motion-based features.
-iii) Integrate the deconfuse track idea to stabilize identity assignment.
-iv) Explore the use of MixSort (by SportsMOT authors) for inference, as it is trained specifically on SportsMOT for tracking. While we take a custom route, MixSort is a strong baseline to benchmark against.
-v) Combine SportsMOT with SoccerNet dataset to improve domain generalization.
-vi) Integrate auxiliary cues like OCR (jersey numbers) or head/face features, if reliably detected.
-vii) The scope of unique IDs in SportsMOT is not global. Nor is it a dataset that can be used for commercial purposes. So maybe getting some custom data annotated?
-viii) Investigate including samples from datasets like Market1501 to regularize the model and improve generalization beyond uniforms (proposed by one of the papers)
-ix)Explore more modern tracking methods such as TrackTrack or other motion-aware trackers.
+ii) Develop better motion-based features. <br />
+iii) Integrate the deconfuse track idea to stabilize identity assignment. <br />
+iv) Explore the use of MixSort (by SportsMOT authors) for inference, as it is trained specifically on SportsMOT for tracking. While we take a custom route, MixSort is a strong baseline to benchmark against. <br />
+v) Combine SportsMOT with SoccerNet dataset to improve domain generalization. <br />
+vi) Integrate auxiliary cues like OCR (jersey numbers) or head/face features, if reliably detected. <br />
+vii) The scope of unique IDs in SportsMOT is not global. Nor is it a dataset that can be used for commercial purposes. So maybe getting some custom data annotated? <br />
+viii) Investigate including samples from datasets like Market1501 to regularize the model and improve generalization beyond uniforms (proposed by one of the papers) <br />
+ix)Explore more modern tracking methods such as TrackTrack or other motion-aware trackers. <br />
 x)Tune tracking hyperparameters (e.g., detection confidence, match thresholds) to suppress spurious detections.
 
