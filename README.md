@@ -1,7 +1,7 @@
 # Football Player Re-Identification & Tracking Pipeline
 
 This repository provides the implementation to try and track soccer players in video clips clips using a **SportsMOT fine-tuned CLIP-ReID model** and **BoT-SORT**.
-
+Brief outline - 1) Finetune CLIP-ReID on the SportsMOT dataset (after converting to a ReID format) and incorporate that and your YOLOv11 into BoT-SORT
 ---
 
 ![Input video](15sec_input_720.gif)
@@ -153,7 +153,7 @@ vii) Track → tracker.update(detections, frame) applies Kalman+GMC prediction, 
 
 Given more time and resources, some things that come to mind are:
 
-i) Investigate better handling of jersey color reliance, which can lead to shortcut learning.
+i) Investigate better handling of jersey color reliance, which can lead to shortcut learning. <br />
 ii) Develop better motion-based features.
 iii) Integrate the deconfuse track idea to stabilize identity assignment.
 iv) Explore the use of MixSort (by SportsMOT authors) for inference, as it is trained specifically on SportsMOT for tracking. While we take a custom route, MixSort is a strong baseline to benchmark against.
