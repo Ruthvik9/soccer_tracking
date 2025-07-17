@@ -1,15 +1,6 @@
 # Football Player Re-Identification & Tracking Pipeline
 
-This repository provides a full pipeline to transform raw SportsMOT football clips into broadcast-quality player tracking results using a fine-tuned CLIP-ReID model and BoT-SORT.
-
----
-
-## Prerequisites
-
-* Linux environment
-* Python 3.8 or higher
-* PyTorch 1.12 or higher
-* torchvision 0.13 or higher
+This repository provides the implementation to try and track soccer players in video clips clips using a **fine-tuned CLIP-ReID model** and **BoT-SORT**.
 
 ---
 
@@ -19,17 +10,17 @@ This repository provides a full pipeline to transform raw SportsMOT football cli
 
 ## Setup
 
-### Clone and Install CLIP-ReID
-
-Clone the repository and install dependencies:
+### Clone the repo and install the environments
 
 ```bash
-git clone https://github.com/Syliz517/CLIP-ReID.git
-cd CLIP-ReID
-pip install -r requirements.txt
+git clone https://github.com/Ruthvik9/soccer_tracking.git
+cd clip_reid
+conda env create -f clipreid.yml # For finetuning ClipReID
+cd ../botsort
+conda env create -f track.yml # for tracking inference
 ```
 
-### Download and Organize SportsMOT Dataset
+### Download and Organize SportsMOT Dataset (for finetuning)
 
 Ensure the dataset is structured as follows:
 
