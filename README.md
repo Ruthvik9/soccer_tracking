@@ -13,6 +13,10 @@ This repository provides a full pipeline to transform raw SportsMOT football cli
 
 ---
 
+![Input video](15sec_input_720.gif)
+
+![Output](15sec_output_720_tight.gif)
+
 ## Setup
 
 ### Clone and Install CLIP-ReID
