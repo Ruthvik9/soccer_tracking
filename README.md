@@ -77,10 +77,10 @@ datasets/SportsMOT_Football/ # In clip_reid root
 
 ---
 
+## Some notes
+### Match-Aware Sampler
 
-## Match-Aware Sampler
-
-The Match-Aware Sampler is an extension of the standard “Random Identity Sampler” used in person Re-ID training. Its core functionality is:
+The Match-Aware Sampler is a custom extension of the standard “Random Identity Sampler” used in person Re-ID training. Its core functionality is:
 
 i) Batch Construction
 
@@ -103,7 +103,7 @@ Forbidding PIDs from **different clips of the same match (potential false negati
 
 ---
 
-## Augmentation Pipeline
+### Augmentation Pipeline
 
 Added to the default training transforms in `clipreid/dataset.py` some extra steps including:
 
