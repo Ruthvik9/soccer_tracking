@@ -4,9 +4,9 @@ This repository provides the implementation to try and track soccer players in v
 ---
 Brief outline - 1) Finetune CLIP-ReID on the SportsMOT dataset (after converting it to a ReID format) and incorporate that and your YOLOv11 into BoT-SORT
 
-![Input video](15sec_input_720.gif)
+![Input video](15sec_input_720p.gif)
 
-![Output](15sec_output_720_tight.gif)
+![Output](15sec_output_720p_tight.gif)
 
 ## Setup
 
