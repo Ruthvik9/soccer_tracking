@@ -1,6 +1,6 @@
 # Football Player Re-Identification & Tracking Pipeline
 
-This repository provides the implementation to try and track soccer players in video clips clips using a **fine-tuned CLIP-ReID model** and **BoT-SORT**.
+This repository provides the implementation to try and track soccer players in video clips clips using a **SportsMOT fine-tuned CLIP-ReID model** and **BoT-SORT**.
 
 ---
 
@@ -130,16 +130,39 @@ python train_clipreid.py --config_file configs/person/vit_clipreid.yml # Already
 
 To perform inference with BoT-SORT, simply run the code
 ```bash
-python infer_botsort.py
+python infer_botsort.py # Place yolov11 and clip_reid_finetuned checkpoints in botsort/models/
 ```
+The above code does the following -
 
+i) Loads YOLOv11 detector from models/yolov11_best.pt (the checkpoint you provided) (not the default used by BoTSORT)
+(Note: Like you said, the checkpoint is just a basic one, I see many spurious detections)
+ii) CLIP-ReID encoder from models/clip_reid.pth, wrapped in a small loader (for feature extraction)
+iii) Transforms - Deterministic resize to 256×128 + normalize with your training mean/std (to match the finetuning config when finetuning clipreid)
+iv) All key thresholds (detection conf, IoU gate, appearance gate, new-track conf, buffer length, score fusion) set via a single args = SimpleNamespace(...)
+v) Replaces FastReID in the default BoT-SORT with a custom CLIPInterface that crops each box, runs it through CLIP-ReID, and returns embeddings
+vi) At detection time requests only “player” and “goalkeeper” classes (drops ball, referee which are also classes.)
+vii) Track → tracker.update(detections, frame) applies Kalman+GMC prediction, runs CLIP embeddings for appearance association.
 
 ---
 
 ## Known Issues & Resolutions
 
-* **PID Continuity:** Handled by separate remapping for train and val sets.
-* **CamID in Val:** camid=1 for query, camid=0 for gallery.
-* **Sampler Logic:** Enforced via custom `SportsMOTSampler`.
-* **Position Embedding Mismatch:** Ensure input size matches or resize position embeddings in the load method.
-* **Checkpoint Usage in Training:** Confirmed by explicitly loading the weight in `train_clipreid.py`.
+* **CamID in Val:** camid=1 for query, camid=0 for gallery (since same camid for query and gallery results in them being filtered out)
+* **Sampler Logic:** Enforced via custom `SportsMOTSampler`. Created a custom sampler to get 'match-aware' samples in each batch.
+* (Not including other minor things like shape mismatches after loading MSMT17 pretrained weights (The pretrained MSMT17 checkpoint’s final classifier was built for MSMT’s 1041 train identities), ID continuity that CLIPReID wants, converting SportsMOT into a ReID format, incorporating your yolov11 into BoTSORT etc.)
+
+## Future Work and Potential Enhancements
+
+Given more time and resources, some things that come to mind are:
+
+i) Investigate better handling of jersey color reliance, which can lead to shortcut learning.
+ii) Develop better motion-based features.
+iii) Integrate the deconfuse track idea to stabilize identity assignment.
+iv) Explore the use of MixSort (by SportsMOT authors) for inference, as it is trained specifically on SportsMOT for tracking. While we take a custom route, MixSort is a strong baseline to benchmark against.
+v) Combine SportsMOT with SoccerNet dataset to improve domain generalization.
+vi) Integrate auxiliary cues like OCR (jersey numbers) or head/face features, if reliably detected.
+vii) The scope of unique IDs in SportsMOT is not global. Nor is it a dataset that can be used for commercial purposes. So maybe getting some custom data annotated?
+viii) Investigate including samples from datasets like Market1501 to regularize the model and improve generalization beyond uniforms (proposed by one of the papers)
+ix)Explore more modern tracking methods such as TrackTrack or other motion-aware trackers.
+x)Tune tracking hyperparameters (e.g., detection confidence, match thresholds) to suppress spurious detections.
+
