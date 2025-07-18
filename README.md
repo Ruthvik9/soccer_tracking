@@ -128,7 +128,8 @@ python train_clipreid.py --config_file configs/person/vit_clipreid.yml # Already
 
 To perform inference with BoT-SORT, simply run the code
 ```bash
-python infer_botsort.py # Place yolov11 and clip_reid_finetuned checkpoints in botsort/models/
+cd botsort; mkdir -p models
+python infer_botsort.py # After placing yolov11 and clip_reid_finetuned checkpoints in botsort/models/
 ```
 The above code does the following -
 
