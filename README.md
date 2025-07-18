@@ -186,4 +186,5 @@ vii) The scope of unique IDs in SportsMOT is not global. Nor is it a dataset tha
 viii) Investigate including samples from datasets like Market1501 to regularize the model and improve generalization beyond uniforms (proposed by one of the papers) <br />
 ix)Explore more modern tracking methods such as TrackTrack or other motion-aware trackers. <br />
 x)Tune tracking hyperparameters (e.g., detection confidence, match thresholds) to suppress spurious detections.
+xi) Explore end to end tracking approaches along with TbD. <br />
 
