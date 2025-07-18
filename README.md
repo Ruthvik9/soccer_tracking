@@ -1,6 +1,6 @@
 # Football Player Re-Identification & Tracking Pipeline
 
-This repository provides the implementation to try and track soccer players in video clips clips using a **SportsMOT fine-tuned CLIP-ReID model** and **BoT-SORT**.
+This repository provides the implementation to try and track soccer players in video clips using a **SportsMOT fine-tuned CLIP-ReID model** and **BoT-SORT**.
 ---
 Brief outline - 1) Finetune CLIP-ReID on the SportsMOT dataset (after converting it to a ReID format) and incorporate that and your YOLOv11 into BoT-SORT
 
@@ -61,7 +61,14 @@ Note: Since SportsMOT has videos/tracks of players and not images, I first conve
 For this, I create 'bins' and sample one frame for every bin (no. of bins is a hyperparam). This helps capture the same player under different poses and viewpoints etc.
 Some examples are shown below. I then created the query and gallery lists from the 10% held-out val set and remapped all the ids to 0....<num_identities-1> since the ClipReID head ideally expects that 
 (in the train set.) 
-The SportsThe log files for this are available in this repo.
+The log files for this are available in this repo.
+
+<img width="38" height="80" alt="image" src="https://github.com/user-attachments/assets/873d496d-c8dd-4993-bab6-bd0c5db15d26" />
+<img width="42" height="128" alt="image" src="https://github.com/user-attachments/assets/2c0565e2-ea89-41ba-9874-b14b2eb6690b" />
+<img width="32" height="131" alt="image" src="https://github.com/user-attachments/assets/7e369c80-a694-4e91-8cc8-bd04adf29672" />
+
+
+
 
 Output structure after running the above code looks like:
 
