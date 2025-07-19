@@ -162,11 +162,11 @@ The above code does the following -
 
 i) Loads YOLOv11 detector from models/yolov11_best.pt (the checkpoint you provided) (not the default used by BoTSORT)<br />
 (Note: Like you said, the checkpoint is just a basic one, I see many spurious detections)<br />
-ii) CLIP-ReID encoder from models/clip_reid.pth, wrapped in a small loader (for feature extraction)<br />
-iii) Transforms - Deterministic resize to 256×128 + normalize with your training mean/std (to match the finetuning config when finetuning clipreid)<br />
+ii) CLIP-ReID encoder from models/clip_reid_finetuned.pth, wrapped in a small loader (for feature extraction)<br />
+iii) Transforms - Deterministic resize to 256×128 + normalize with my training mean/std (to match the finetuning config when finetuning clipreid)<br />
 iv) All key thresholds (detection conf, IoU gate, appearance gate, new-track conf, buffer length, score fusion) set via a single args = SimpleNamespace(...)<br />
 v) Replaces FastReID in the default BoT-SORT with a custom CLIPInterface that crops each box, runs it through CLIP-ReID, and returns embeddings<br />
-vi) At detection time requests only “player” and “goalkeeper” classes (drops ball, referee which are also classes.)<br />
+vi) At detection time requests only “player” and “goalkeeper” classes (drops ball, referee which are also classes in your pretrained model.)<br />
 vii) Track → tracker.update(detections, frame) applies Kalman+GMC prediction, runs CLIP embeddings for appearance association.<br />
 
 ---
