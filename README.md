@@ -215,4 +215,6 @@ viii) Investigate including samples from datasets like Market1501 to regularize 
 ix)Explore more modern tracking methods such as TrackTrack or other motion-aware trackers. <br />
 x)Tune tracking hyperparameters (e.g., detection confidence, match thresholds) to suppress spurious detections.
 xi) Explore end to end tracking approaches along with TbD. <br />
+xii) The detector is struggling with certain poses. For example, the goalkeeper falls down at the end and the detector doesn't even detect him. <br />
+xiii) Work on techniques to reduce ID switches when players overlap with each other.
 
