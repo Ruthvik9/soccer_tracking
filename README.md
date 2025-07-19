@@ -160,15 +160,15 @@ vii) Track → tracker.update(detections, frame) applies Kalman+GMC prediction, 
 ## Some design choices
 
 1. Training split – combine “train” + “val”, ignore public “test”.
-SportsMOT’s test set is huge but unlabeled, so we merged the 45-clip train and 45-clip val partitions into a single training pool. Around 10 % of the player-IDs are set aside as an internal validation fold; this protects us from over-fitting even though we aren’t chasing the official leaderboard.
+SportsMOT’s test set is huge but unlabeled, so I merged the 45-clip train and 45-clip val partitions into a single training pool. Around 10 % of the player-IDs are set aside as an internal validation fold; this protects us from over-fitting even though we aren’t chasing the official leaderboard.
 <br />
 
 2. Frame subsampling – atmost 8 crops per track.
-Each football track is ~500 frames long. Cropping every frame would flood the GPU with near-duplicates. We split each track into temporal bins (≈ one every 2-3 seconds), pick one random frame per bin, and guarantee at least four samples per ID (padding by duplication if a track is ultra-short). This keeps useful pose/zoom variation while cutting ~90 % of redundant images.
+Each football track is ~500 frames long. Cropping every frame would flood the GPU with near-duplicates. I split each track into temporal bins and pick one random frame per bin. This keeps useful pose/zoom variation while cutting redundant images.
 <br />
 
 3. Duplicate IDs across clips – handled in the sampler, not the labels.
-SportsMOT assigns new person-IDs in every clip, so the same striker can appear with a different PID in another match segment. Instead of re-labelling the dataset, we introduced a match-aware PK sampler (described above) so the triplet loss doesn't see false negatives (not 100% foolproof tho unless we re-label the entire dataset). Cross-entropy still works because labels are unique within the batch.
+SportsMOT assigns new person-IDs in every clip, so the same striker can appear with a different PID in another match segment. Instead of re-labelling the dataset, I introduced a match-aware PK sampler (described above) so the triplet loss doesn't see false negatives (not 100% foolproof tho unless we re-label the entire dataset). Cross-entropy still works because labels are unique within the batch.
 <br />
 
 4. Increased the allowed duration after which tracks are considered lost
